@@ -2,24 +2,18 @@ package com.example.hw1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
-import android.net.wifi.SupplicantState;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 public class MainActivity extends AppCompatActivity {
     private static Context appContext;
+    PendingIntent pendingIntent;
     private class Asinc extends AsyncTask<Void, Integer, Boolean> {
         @Override
         protected Boolean doInBackground(Void... params) {
@@ -61,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e("WIFI",wifiInfo.getSSID());
         }*/
         //Get request
-        new Asinc().execute();
+        //new Asinc().execute();
         /*URL url = null;
         try {
             url = new URL("http://www.android.com/");
@@ -82,6 +76,18 @@ public class MainActivity extends AppCompatActivity {
         } finally {
             urlConnection.disconnect();
         }*/
+        Log.i("intent","act1");
+        Intent i = new Intent(this, Main2Activity.class);
+        startActivity(i);
+
+
+
+        Intent intent = new Intent(MainActivity.this, Alarm.class);
+        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        int interval = 8000;
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
     }
 
 }
